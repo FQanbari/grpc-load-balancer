@@ -29,7 +29,7 @@ public class HttpHealthCheck : IHealthCheck
         foreach (var server in servers)
         {
             if (await _IsServerHealthyAsync(server))
-            {
+            {                
                 healthyServers.Add(server);
             }
         }
@@ -54,11 +54,11 @@ public class HttpHealthCheck : IHealthCheck
 
                 if (isHealthy)
                 {
-                    Console.WriteLine($"Health check passed for server {server.Id}. Status Code: {response.StatusCode}");
+                    server.AddResponse($"Health check passed for server {server.Id}. Status Code: {response.StatusCode}");
                 }
                 else
                 {
-                    Console.WriteLine($"Health check failed for server {server.Id}. Status Code: {response.StatusCode}");
+                    server.AddResponse($"Health check passed for server {server.Id}. Status Code: {response.StatusCode}");
                 }
 
                 return isHealthy;
@@ -68,7 +68,7 @@ public class HttpHealthCheck : IHealthCheck
         catch (Exception ex)
         {
             // An exception may be thrown if the server is unreachable or there is an issue with the health check
-            Console.WriteLine($"Exception during health check for server {server.Id}: {ex.Message}");
+            server.AddResponse($"Exception during health check for server {server.Id}: {ex.Message}");
             return false;
         }
     }
